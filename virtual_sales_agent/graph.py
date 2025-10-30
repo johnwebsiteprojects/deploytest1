@@ -23,27 +23,19 @@ from virtual_sales_agent.tools import (
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
 
-# GOOGLE_API_KEY=AIzaSyDOrdlsnOinvvd-V1Im7CU2iTkECoLpONg
-# GOOGLE_APPLICATION_CREDENTIALS="batangas-pi-b60e328557b3.json"
-# GCP_PROJECT_ID=gen-lang-client-0652761812
-# REGION=asia-southeast1
-# LANGCHAIN_API_KEY="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"
-# LANGCHAIN_TRACING_V2=true
-# LANGCHAIN_ENDPOINT=https://api.smith.langchain.com
-# LANGCHAIN_PROJECT=virtual-sales-agent
 
-
-langchain_key = "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"
-
+langchain_key = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_API_KEY"] = langchain_key
-os.environ["LANGCHAIN_TRACING_V2"] = True
-os.environ["LANGCHAIN_ENDPOINT"] = "https://api.smith.langchain.com"
-os.environ["LANGCHAIN_PROJECT"] = "virtual-sales-agent"
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "batangas-pi-b60e328557b3.json"
-os.environ["GOOGLE_API_KEY"] = "AIzaSyDOrdlsnOinvvd-V1Im7CU2iTkECoLpONg"
+os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
+os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
+os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
+    "GOOGLE_APPLICATION_CREDENTIALS"
+)
+os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
-PROJECT_ID = "gen-lang-client-0652761812"
-REGION = "asia-southeast1"
+PROJECT_ID = os.getenv("PROJECT_ID")
+REGION = os.getenv("REGION")
 
 # Initialize Vertex AI
 aiplatform.init(project=PROJECT_ID, location=REGION)
