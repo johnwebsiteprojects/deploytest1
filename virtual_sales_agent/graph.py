@@ -22,8 +22,9 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
-load_dotenv()
-
+env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+load_dotenv(dotenv_path=env_path)
+# load_dotenv()
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
