@@ -22,7 +22,6 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
-
 load_dotenv()
 
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
@@ -69,6 +68,9 @@ class Assistant:
                 break
         return {"messages": result}
 
+from vertexai import init
+
+init(project="batangas-pi", location="asia-southeast1")
 
 llm = ChatVertexAI(model="gemini-2.0-flash-exp")
 
