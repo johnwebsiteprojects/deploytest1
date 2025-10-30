@@ -22,23 +22,8 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
-import streamlit as st
-
-# First, try Streamlit Secrets (for deployed app)
-if hasattr(st, "secrets"):
-    for key, value in st.secrets.items():
-        os.environ[key] = str(value)
-
-# Then, fallback to .env (for local dev)
-else:
-    from dotenv import load_dotenv
-    import os
-    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    ENV_PATH = os.path.join(BASE_DIR, ".env")
-    if not load_dotenv(ENV_PATH):
-        print(f"⚠️ .env not found at {ENV_PATH}")
-        
 load_dotenv()
+
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
