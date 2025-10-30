@@ -22,7 +22,9 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
-load_dotenv(dotenv_path="/.env")
+
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+load_dotenv(dotenv_path=os.path.join(BASE_DIR, ".env"))
 
 langchain_key = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_API_KEY"] = langchain_key
