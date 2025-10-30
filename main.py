@@ -1,18 +1,16 @@
 import json
 import uuid
+import os
 
 import streamlit as st
 from langchain_core.messages import AIMessage, HumanMessage
 from langchain_core.messages.tool import ToolMessage
+from dotenv import load_dotenv
 
+from dotenv import load_dotenv
 from virtual_sales_agent.graph import graph
-import os
+dotenv_loaded = load_dotenv(dotenv_path=os.path.join(os.getcwd(), '.env')) or load_dotenv()
 
-with open(".env") as f:
-    for line in f:
-        if line.strip() and not line.startswith("#"):
-            key, value = line.strip().split("=", 1)
-            os.environ[key] = value.strip().strip('"')
 
 def set_page_config():
     st.set_page_config(
