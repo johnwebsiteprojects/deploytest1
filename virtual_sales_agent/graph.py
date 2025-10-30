@@ -22,8 +22,32 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
+
+# ✅ Get absolute path to your .env
 env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
-load_dotenv(dotenv_path=env_path)
+
+# ✅ Check if the file exists before loading
+if os.path.exists(env_path):
+    load_dotenv(dotenv_path=env_path)
+else:
+    print(f"⚠️ .env file not found at {env_path}")
+
+# ✅ Safely get environment variables
+langchain_vars = {
+    "LANGCHAIN_API_KEY": os.getenv("LANGCHAIN_API_KEY"),
+    "LANGCHAIN_TRACING_V2": os.getenv("LANGCHAIN_TRACING_V2"),
+    "LANGCHAIN_ENDPOINT": os.getenv("LANGCHAIN_ENDPOINT"),
+    "LANGCHAIN_PROJECT": os.getenv("LANGCHAIN_PROJECT"),
+}
+
+# ✅ Only set the ones that exist (avoid NoneType)
+for key, value in langchain_vars.items():
+    if value is not None:
+        os.environ[key] = value
+    else:
+        print(f"⚠️ Missing {key} in .env")
+
+        
 # load_dotenv()
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
