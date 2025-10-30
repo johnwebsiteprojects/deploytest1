@@ -1,4 +1,4 @@
-import os,json
+import os
 from datetime import datetime
 from typing import Annotated
 
@@ -13,7 +13,7 @@ from langgraph.graph.message import AnyMessage, add_messages
 from langgraph.prebuilt import tools_condition
 from typing_extensions import TypedDict
 from vertexai import init
-import streamlit as st
+
 
 
 from virtual_sales_agent.tools import (
@@ -43,32 +43,12 @@ else:
 
 
 
+
+
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
 PROJECT_ID = os.getenv("GCP_PROJECT_ID")
 REGION = os.getenv("REGION")
-
-
-
-
-
-creds_json = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
-creds_dict = json.loads(creds_json)
-
-
-
-
-with open("/tmp/gcp_key.json", "w") as f:
-    json.dump(creds_dict, f)
-
-
-# Point GOOGLE_APPLICATION_CREDENTIALS to the temp file
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/tmp/gcp_key.json"
-
-
-
-
-
 
 init(project=PROJECT_ID, location="asia-southeast1")
 
