@@ -22,6 +22,18 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
+import os, json, tempfile, streamlit as st
+
+if "GOOGLE_APPLICATION_CREDENTIALS_JSON" in st.secrets:
+    creds_data = st.secrets["GOOGLE_APPLICATION_CREDENTIALS_JSON"]
+    tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".json")
+    tmp.write(creds_data.encode())
+    tmp.close()
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = tmp.name
+
+
+
+    
 load_dotenv()
 
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
