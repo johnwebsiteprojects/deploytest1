@@ -12,6 +12,9 @@ from langgraph.graph import END, START, StateGraph
 from langgraph.graph.message import AnyMessage, add_messages
 from langgraph.prebuilt import tools_condition
 from typing_extensions import TypedDict
+from vertexai import init
+
+
 
 from virtual_sales_agent.tools import (
     check_order_status,
@@ -28,13 +31,23 @@ os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
 os.environ["LANGCHAIN_PROJECT"] = os.getenv("LANGCHAIN_PROJECT")
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv(
-    "GOOGLE_APPLICATION_CREDENTIALS"
-)
+
+os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+
+credentials_path = os.getenv("GOOGLE_APPLICATION_CREDENTIALS")
+if not os.path.exists(credentials_path):
+    print(f"⚠️ Credentials file not found at {credentials_path}")
+else:
+    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = credentials_path
+    init(project="batangas-pi", location="asia-southeast1")
+
+
 os.environ["GOOGLE_API_KEY"] = os.getenv("GOOGLE_API_KEY")
 
-PROJECT_ID = os.getenv("PROJECT_ID")
+PROJECT_ID = os.getenv("GCP_PROJECT_ID")
 REGION = os.getenv("REGION")
+
+init(project=PROJECT_ID, location="asia-southeast1")
 
 # Initialize Vertex AI
 aiplatform.init(project=PROJECT_ID, location=REGION)
@@ -68,9 +81,7 @@ class Assistant:
                 break
         return {"messages": result}
 
-from vertexai import init
 
-init(project="batangas-pi", location="asia-southeast1")
 
 llm = ChatVertexAI(model="gemini-2.0-flash-exp")
 
