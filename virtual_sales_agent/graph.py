@@ -22,33 +22,23 @@ from virtual_sales_agent.tools import (
 )
 from virtual_sales_agent.utils import create_tool_node_with_fallback
 
+import streamlit as st
 
-# ✅ Get absolute path to your .env
-env_path = os.path.join(os.path.dirname(__file__), '..', '.env')
+# First, try Streamlit Secrets (for deployed app)
+if hasattr(st, "secrets"):
+    for key, value in st.secrets.items():
+        os.environ[key] = str(value)
 
-# ✅ Check if the file exists before loading
-if os.path.exists(env_path):
-    load_dotenv(dotenv_path=env_path)
+# Then, fallback to .env (for local dev)
 else:
-    print(f"⚠️ .env file not found at {env_path}")
-
-# ✅ Safely get environment variables
-langchain_vars = {
-    "LANGCHAIN_API_KEY": os.getenv("LANGCHAIN_API_KEY"),
-    "LANGCHAIN_TRACING_V2": os.getenv("LANGCHAIN_TRACING_V2"),
-    "LANGCHAIN_ENDPOINT": os.getenv("LANGCHAIN_ENDPOINT"),
-    "LANGCHAIN_PROJECT": os.getenv("LANGCHAIN_PROJECT"),
-}
-
-# ✅ Only set the ones that exist (avoid NoneType)
-for key, value in langchain_vars.items():
-    if value is not None:
-        os.environ[key] = value
-    else:
-        print(f"⚠️ Missing {key} in .env")
-
+    from dotenv import load_dotenv
+    import os
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    ENV_PATH = os.path.join(BASE_DIR, ".env")
+    if not load_dotenv(ENV_PATH):
+        print(f"⚠️ .env not found at {ENV_PATH}")
         
-# load_dotenv()
+load_dotenv()
 os.environ["LANGCHAIN_API_KEY"] = os.getenv("LANGCHAIN_API_KEY")
 os.environ["LANGCHAIN_TRACING_V2"] = os.getenv("LANGCHAIN_TRACING_V2")
 os.environ["LANGCHAIN_ENDPOINT"] = os.getenv("LANGCHAIN_ENDPOINT")
